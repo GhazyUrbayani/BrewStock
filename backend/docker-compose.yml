@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: brewstock
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresData:/var/lib/postgresql/data
+      - ./sql/initSchema.sql:/docker-entrypoint-initdb.d/initSchema.sql
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisData:/data
+
+volumes:
+  postgresData:
+  redisData:
