@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.controllers.authController import AuthController
 from app.controllers.forecastController import ForecastController
+from app.controllers.inventoryController import InventoryController
 from app.core.cacheClient import getRedisClient
 from app.core.database import getSession
 from app.core.security import readToken
@@ -18,6 +19,7 @@ from app.repositories.transactionRepository import TransactionRepository
 from app.repositories.userRepository import UserRepository
 from app.services.authService import AuthService
 from app.services.forecastService import ForecastService
+from app.services.inventoryService import InventoryService
 from app.strategies.prophetStrategy import ProphetStrategy
 from app.strategies.xgboostStrategy import XgboostStrategy
 
@@ -47,6 +49,17 @@ async def getForecastController(
         alertPublisher=alertPublisher,
     )
     return ForecastController(forecastService)
+
+
+async def getInventoryController(
+    sessionValue: AsyncSession = Depends(getSession),
+) -> InventoryController:
+    transactionRepository = TransactionRepository(sessionValue)
+    inventoryService = InventoryService(
+        transactionRepository=transactionRepository,
+        sessionValue=sessionValue,
+    )
+    return InventoryController(inventoryService)
 
 
 # Dibantu AI: getAuthController

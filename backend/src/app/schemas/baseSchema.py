@@ -2,14 +2,13 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, ConfigDict, model_validator
 
 from app.core.sanitizer import sanitizeAnyValue
 
 
 class SanitizedModel(BaseModel):
-    class Config:
-        extra = "forbid"
+    model_config = ConfigDict(extra="forbid")
 
     # Dibantu AI: sanitizeValues
     @model_validator(mode="before")

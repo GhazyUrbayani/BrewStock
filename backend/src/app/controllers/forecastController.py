@@ -14,7 +14,7 @@ class ForecastController:
     async def createForecast(self, requestValue: ForecastRequest) -> ForecastResponse:
         try:
             return await self.forecastService.generateForecast(requestValue)
-        except ValueError as errorValue:
+        except (RuntimeError, ValueError) as errorValue:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=str(errorValue),

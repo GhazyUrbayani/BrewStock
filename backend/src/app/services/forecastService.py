@@ -34,16 +34,16 @@ class ForecastService:
 
     # Dibantu AI: generateForecast
     async def generateForecast(self, requestValue: ForecastRequest) -> ForecastResponse:
-        cacheKey = self.buildCacheKey(requestValue)
-        cachedPayload = await self.cacheValue.get(cacheKey)
-        if cachedPayload:
-            return self.readCachedResponse(requestValue, cachedPayload)
-
         strategyValue = self.strategyMap.get(requestValue.modelType)
         if strategyValue is None:
             raise ValueError("Unsupported model type")
 
         historyData = await self.resolveHistoryData(requestValue)
+        cacheKey = self.buildCacheKey(requestValue, historyData)
+        cachedPayload = await self.cacheValue.get(cacheKey)
+        if cachedPayload:
+            return self.readCachedResponse(requestValue, cachedPayload)
+
         forecastPoints = await strategyValue.runForecast(
             historyData=historyData,
             horizonDays=requestValue.horizonDays,
@@ -109,15 +109,20 @@ class ForecastService:
         )
 
     # Dibantu AI: buildCacheKey
-    def buildCacheKey(self, requestValue: ForecastRequest) -> str:
+    def buildCacheKey(
+        self,
+        requestValue: ForecastRequest,
+        historyData: list[DemandHistoryData],
+    ) -> str:
         historyString = "|".join(
             f"{itemValue.transactionDate.isoformat()}:{itemValue.demandQuantity}"
-            for itemValue in requestValue.historyData
+            for itemValue in historyData
         )
         digestValue = hashlib.sha256(historyString.encode("utf-8")).hexdigest()
         return (
             f"forecast:{requestValue.skuId}:{requestValue.modelType}:"
-            f"{requestValue.horizonDays}:{digestValue}"
+            f"{requestValue.horizonDays}:{requestValue.currentStock}:"
+            f"{requestValue.stockThreshold}:{digestValue}"
         )
 
     # Dibantu AI: serializeResponse

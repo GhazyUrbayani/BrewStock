@@ -5,6 +5,7 @@ import asyncio
 import pandas as pd
 
 from app.models.forecastDataModel import DemandHistoryData, ForecastPointData
+from app.strategies.baselineStrategy import buildBaselineForecast
 from app.strategies.forecastStrategy import ForecastStrategy
 
 try:
@@ -20,11 +21,8 @@ class ProphetStrategy(ForecastStrategy):
         historyData: list[DemandHistoryData],
         horizonDays: int,
     ) -> list[ForecastPointData]:
-        if Prophet is None:
-            raise RuntimeError("Prophet library unavailable")
-
-        if len(historyData) < 2:
-            raise ValueError("Need minimum history")
+        if Prophet is None or len(historyData) < 2:
+            return buildBaselineForecast(historyData, horizonDays)
 
         sortedHistory = sorted(historyData, key=lambda itemValue: itemValue.transactionDate)
         frameValue = pd.DataFrame(

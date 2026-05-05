@@ -10,6 +10,7 @@ from app.core.database import asyncEngine, baseModel
 from app.core.settings import loadSettings
 from app.routes.authRoutes import authRouter
 from app.routes.forecastRoutes import forecastRouter
+from app.routes.inventoryRoutes import inventoryRouter
 
 settingsValue = loadSettings()
 
@@ -41,6 +42,7 @@ app.add_middleware(
 )
 
 app.include_router(authRouter)
+app.include_router(inventoryRouter)
 app.include_router(forecastRouter)
 
 

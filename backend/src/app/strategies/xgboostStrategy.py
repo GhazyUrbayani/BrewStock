@@ -4,6 +4,7 @@ import asyncio
 from datetime import timedelta
 
 from app.models.forecastDataModel import DemandHistoryData, ForecastPointData
+from app.strategies.baselineStrategy import buildBaselineForecast
 from app.strategies.forecastStrategy import ForecastStrategy
 
 try:
@@ -19,11 +20,8 @@ class XgboostStrategy(ForecastStrategy):
         historyData: list[DemandHistoryData],
         horizonDays: int,
     ) -> list[ForecastPointData]:
-        if XGBRegressor is None:
-            raise RuntimeError("XGBoost library unavailable")
-
-        if len(historyData) < 2:
-            raise ValueError("Need minimum history")
+        if XGBRegressor is None or len(historyData) < 2:
+            return buildBaselineForecast(historyData, horizonDays)
 
         sortedHistory = sorted(historyData, key=lambda itemValue: itemValue.transactionDate)
         return await asyncio.to_thread(self.predictValues, sortedHistory, horizonDays)
