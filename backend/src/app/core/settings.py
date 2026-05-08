@@ -67,7 +67,10 @@ def loadSettings() -> AppSettings:
         rateLimitCount=parseIntValue(os.getenv("rateLimitCount"), 100),
         rateLimitWindowSeconds=parseIntValue(os.getenv("rateLimitWindowSeconds"), 60),
         forecastCacheTtlSeconds=parseIntValue(os.getenv("forecastCacheTtlSeconds"), 3600),
-        yoloModelPath=os.getenv("yoloModelPath", "ml/scanner/models/best.pt"),
+        yoloModelPath=os.getenv(
+            "yoloModelPath",
+            os.getenv("YOLO_MODEL_PATH", "ml/scanner/models/best.pt"),
+        ),
         scannerRateLimitCount=parseIntValue(os.getenv("scannerRateLimitCount"), 10),
         scannerRateLimitWindowSeconds=parseIntValue(
             os.getenv("scannerRateLimitWindowSeconds"),

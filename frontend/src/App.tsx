@@ -2,6 +2,7 @@ import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ApiError, apiRequest } from './api'
 import AlertPanel from './components/AlertPanel'
 import AssistantPage from './pages/AssistantPage'
+import ScannerPage from './pages/ScannerPage'
 import './App.css'
 import type {
   AuthMode,
@@ -763,6 +764,8 @@ function App() {
           </div>
         </div>
       </section>
+
+      <ScannerPage authRequest={authRequest} />
 
       <AssistantPage authRequest={authRequest} />
     </main>

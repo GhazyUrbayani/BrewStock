@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, File, Form, UploadFile
+from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.controllers.scannerController import ScannerController
 from app.core.dependencies import getScannerController, readCurrentUserId
@@ -25,12 +25,10 @@ async def enforceScannerLimit(
 # dibantu AI: detectStock
 async def detectStock(
     image: UploadFile = File(...),
-    applyStockUpdate: bool = Form(default=False),
     controllerValue: ScannerController = Depends(getScannerController),
 ) -> ScannerResponse:
     imageBytes = await image.read()
     return await controllerValue.detectStock(
         imageBytes=imageBytes,
         contentType=image.content_type,
-        applyStockUpdate=applyStockUpdate,
     )

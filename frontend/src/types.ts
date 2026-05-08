@@ -62,3 +62,36 @@ export type ForecastChartSeries = {
   unitLabel: string
   points: ForecastChartPoint[]
 }
+
+export type ScannerBoundingBox = {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
+export type ScannerDetection = {
+  className: string
+  confidence: number
+  count: number
+  boundingBoxes: ScannerBoundingBox[]
+}
+
+export type ScannerSuggestedStockUpdate = {
+  skuId: string
+  detectedCount: number
+}
+
+export type ScannerResponse = {
+  detections: ScannerDetection[]
+  totalItemsDetected: number
+  annotatedImageBase64: string
+  inferenceTimeMs: number
+  suggestedStockUpdate: ScannerSuggestedStockUpdate[]
+}
+
+export type StockUpdateResponse = {
+  skuId: string
+  currentStock: number
+  updatedAt: string
+}

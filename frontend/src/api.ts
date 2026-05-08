@@ -67,7 +67,9 @@ export async function apiRequest<TResponse>(
   const headersValue = new Headers()
   headersValue.set('Accept', 'application/json')
 
-  if (optionsValue.body !== undefined) {
+  const isFormData = optionsValue.body instanceof FormData
+
+  if (optionsValue.body !== undefined && !isFormData) {
     headersValue.set('Content-Type', 'application/json')
   }
 
@@ -81,7 +83,9 @@ export async function apiRequest<TResponse>(
     body:
       optionsValue.body === undefined
         ? undefined
-        : JSON.stringify(optionsValue.body),
+        : isFormData
+          ? optionsValue.body
+          : JSON.stringify(optionsValue.body),
   })
 
   const textValue = await responseValue.text()

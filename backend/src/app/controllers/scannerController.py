@@ -2,15 +2,12 @@ from __future__ import annotations
 
 from fastapi import HTTPException, status
 
-from app.models.scannerResultModel import SuggestedStockUpdate
-from app.schemas.inventorySchema import StockUpdateRequest
 from app.schemas.scannerSchema import (
     ScannerBoundingBoxOutput,
     ScannerDetectionOutput,
     ScannerResponse,
     ScannerSuggestedStockUpdate,
 )
-from app.services.inventoryService import InventoryService
 from app.services.scannerService import ScannerService
 
 
@@ -18,17 +15,14 @@ class ScannerController:
     def __init__(
         self,
         scannerService: ScannerService,
-        inventoryService: InventoryService | None = None,
     ) -> None:
         self.scannerService = scannerService
-        self.inventoryService = inventoryService
 
     # dibantu AI: detectStock
     async def detectStock(
         self,
         imageBytes: bytes,
         contentType: str | None,
-        applyStockUpdate: bool = False,
     ) -> ScannerResponse:
         if imageBytes == b"":
             raise HTTPException(
@@ -59,8 +53,6 @@ class ScannerController:
             )
 
         resultValue = await self.scannerService.runDetection(imageBytes)
-        if applyStockUpdate:
-            await self.applySuggestedStockUpdate(resultValue.suggestedStockUpdate)
 
         return ScannerResponse(
             detections=[
@@ -91,25 +83,6 @@ class ScannerController:
                 for itemValue in resultValue.suggestedStockUpdate
             ],
         )
-
-    # dibantu AI: applySuggestedStockUpdate
-    async def applySuggestedStockUpdate(
-        self,
-        suggestedStockUpdate: list[SuggestedStockUpdate],
-    ) -> None:
-        if self.inventoryService is None:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Inventory service unavailable",
-            )
-
-        for itemValue in suggestedStockUpdate:
-            await self.inventoryService.updateCurrentStock(
-                skuId=itemValue.skuId,
-                requestValue=StockUpdateRequest(
-                    currentStock=float(itemValue.detectedCount),
-                ),
-            )
 
     # dibantu AI: readImageType
     def readImageType(self, imageBytes: bytes) -> str | None:

@@ -94,11 +94,7 @@ async def getScannerController(
 ) -> ScannerController:
     settingsValue = loadSettings()
     scannerService = ScannerService.getInstance(settingsValue.yoloModelPath)
-    inventoryService = buildInventoryService(sessionValue)
-    return ScannerController(
-        scannerService=scannerService,
-        inventoryService=inventoryService,
-    )
+    return ScannerController(scannerService=scannerService)
 
 
 # dibantu AI: getMenuController
