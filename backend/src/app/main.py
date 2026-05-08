@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.cacheClient import getRedisClient
 from app.core.database import asyncEngine, baseModel
 from app.core.settings import loadSettings
+from app.routes.aiRoutes import aiRouter
 from app.routes.authRoutes import authRouter
 from app.routes.forecastRoutes import forecastRouter
 from app.routes.inventoryRoutes import inventoryRouter
@@ -44,6 +45,7 @@ app.add_middleware(
 app.include_router(authRouter)
 app.include_router(inventoryRouter)
 app.include_router(forecastRouter)
+app.include_router(aiRouter)
 
 
 @app.get("/health")
