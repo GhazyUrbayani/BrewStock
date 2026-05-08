@@ -7,6 +7,8 @@ from app.core.dependencies import getInventoryController, readCurrentUserId
 from app.core.rateLimit import enforceRateLimit
 from app.schemas.inventorySchema import (
     InventorySummaryResponse,
+    StockUpdateRequest,
+    StockUpdateResponse,
     TransactionCreateRequest,
     TransactionResponse,
 )
@@ -59,3 +61,17 @@ async def listSummaries(
     controllerValue: InventoryController = Depends(getInventoryController),
 ) -> list[InventorySummaryResponse]:
     return await controllerValue.listSummaries()
+
+
+@inventoryRouter.patch(
+    "/{skuId}/stock",
+    response_model=StockUpdateResponse,
+    dependencies=[Depends(enforceRateLimit), Depends(readCurrentUserId)],
+)
+# Dibantu AI: updateStock
+async def updateStock(
+    skuId: str,
+    requestValue: StockUpdateRequest,
+    controllerValue: InventoryController = Depends(getInventoryController),
+) -> StockUpdateResponse:
+    return await controllerValue.updateStock(skuId, requestValue)

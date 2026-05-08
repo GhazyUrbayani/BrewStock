@@ -4,6 +4,8 @@ from fastapi import HTTPException, status
 
 from app.schemas.inventorySchema import (
     InventorySummaryResponse,
+    StockUpdateRequest,
+    StockUpdateResponse,
     TransactionCreateRequest,
     TransactionResponse,
 )
@@ -39,3 +41,17 @@ class InventoryController:
 
     async def listSummaries(self) -> list[InventorySummaryResponse]:
         return await self.inventoryService.listSummaries()
+
+    # Dibantu AI: updateStock
+    async def updateStock(
+        self,
+        skuId: str,
+        requestValue: StockUpdateRequest,
+    ) -> StockUpdateResponse:
+        try:
+            return await self.inventoryService.updateCurrentStock(skuId, requestValue)
+        except ValueError as errorValue:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(errorValue),
+            ) from errorValue

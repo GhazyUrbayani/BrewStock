@@ -27,3 +27,13 @@ class InventorySummaryResponse(SanitizedModel):
     totalDemand: float
     averageDemand: float
     lastTransactionDate: date
+
+
+class StockUpdateRequest(SanitizedModel):
+    currentStock: float = Field(ge=0)
+
+
+class StockUpdateResponse(SanitizedModel):
+    skuId: str
+    currentStock: float
+    updatedAt: datetime

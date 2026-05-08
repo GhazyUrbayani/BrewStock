@@ -269,7 +269,7 @@ Warna merah pada "↓ 5%" dan badge "⚠ Perlu perhatian" langsung menyampaikan 
 - Komentar: maksimal 5 kata, huruf kapital di awal kata pertama
 - Bagian yang dibantu AI diberi komentar `# dibantu AI: [fungsi]`
 
-### TDD
+### TDD (test driven development)
 
 Setiap fitur baru wajib ada unit test sebelum implementasi:
 

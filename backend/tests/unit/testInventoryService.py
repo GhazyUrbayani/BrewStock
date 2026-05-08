@@ -5,7 +5,7 @@ from datetime import date, datetime, timezone
 
 import pytest
 
-from app.schemas.inventorySchema import TransactionCreateRequest
+from app.schemas.inventorySchema import StockUpdateRequest, TransactionCreateRequest
 from app.services.inventoryService import InventoryService
 
 
@@ -97,11 +97,39 @@ class FakeTransactionRepository:
         return resultItems
 
 
+@dataclass
+class FakeStockItem:
+    skuId: str
+    currentStock: float
+    updatedAt: datetime
+
+
+class FakeStockRepository:
+    def __init__(self) -> None:
+        self.items: dict[str, FakeStockItem] = {}
+
+    async def upsertStock(self, skuId: str, currentStock: float) -> FakeStockItem:
+        stockValue = self.items.get(skuId)
+        if stockValue is None:
+            stockValue = FakeStockItem(
+                skuId=skuId,
+                currentStock=currentStock,
+                updatedAt=datetime.now(timezone.utc),
+            )
+            self.items[skuId] = stockValue
+            return stockValue
+
+        stockValue.currentStock = currentStock
+        stockValue.updatedAt = datetime.now(timezone.utc)
+        return stockValue
+
+
 @pytest.mark.asyncio
 async def testInventoryServiceCrudAndSummary() -> None:
     sessionValue = FakeSession()
     repositoryValue = FakeTransactionRepository()
-    serviceValue = InventoryService(repositoryValue, sessionValue)
+    stockRepository = FakeStockRepository()
+    serviceValue = InventoryService(repositoryValue, stockRepository, sessionValue)
 
     await serviceValue.createTransaction(
         TransactionCreateRequest(
@@ -142,7 +170,26 @@ async def testInventoryServiceCrudAndSummary() -> None:
 async def testInventoryDeleteNotFoundRaises() -> None:
     sessionValue = FakeSession()
     repositoryValue = FakeTransactionRepository()
-    serviceValue = InventoryService(repositoryValue, sessionValue)
+    stockRepository = FakeStockRepository()
+    serviceValue = InventoryService(repositoryValue, stockRepository, sessionValue)
 
     with pytest.raises(ValueError):
         await serviceValue.deleteTransaction(999)
+
+
+@pytest.mark.asyncio
+# Dibantu AI: testUpdateCurrentStock
+async def testUpdateCurrentStock() -> None:
+    sessionValue = FakeSession()
+    repositoryValue = FakeTransactionRepository()
+    stockRepository = FakeStockRepository()
+    serviceValue = InventoryService(repositoryValue, stockRepository, sessionValue)
+
+    resultValue = await serviceValue.updateCurrentStock(
+        skuId="arabica-beans",
+        requestValue=StockUpdateRequest(currentStock=14),
+    )
+
+    assert resultValue.skuId == "arabica-beans"
+    assert resultValue.currentStock == 14
+    assert sessionValue.commitCount == 1

@@ -21,6 +21,9 @@ class AppSettings:
     rateLimitCount: int
     rateLimitWindowSeconds: int
     forecastCacheTtlSeconds: int
+    yoloModelPath: str
+    scannerRateLimitCount: int
+    scannerRateLimitWindowSeconds: int
 
 
 settingsCache: AppSettings | None = None
@@ -64,5 +67,11 @@ def loadSettings() -> AppSettings:
         rateLimitCount=parseIntValue(os.getenv("rateLimitCount"), 100),
         rateLimitWindowSeconds=parseIntValue(os.getenv("rateLimitWindowSeconds"), 60),
         forecastCacheTtlSeconds=parseIntValue(os.getenv("forecastCacheTtlSeconds"), 3600),
+        yoloModelPath=os.getenv("yoloModelPath", "ml/scanner/models/best.pt"),
+        scannerRateLimitCount=parseIntValue(os.getenv("scannerRateLimitCount"), 10),
+        scannerRateLimitWindowSeconds=parseIntValue(
+            os.getenv("scannerRateLimitWindowSeconds"),
+            60,
+        ),
     )
     return settingsCache

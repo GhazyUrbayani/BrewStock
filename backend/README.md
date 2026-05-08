@@ -20,6 +20,7 @@ FastAPI backend untuk auth, inventory transactions, dan demand forecast.
 - `POST /api/v1/inventory/transactions`
 - `DELETE /api/v1/inventory/transactions/{transactionId}`
 - `POST /api/v1/forecast/demand`
+- `POST /api/v1/scanner/detect`
 
 ## Run
 ```bash

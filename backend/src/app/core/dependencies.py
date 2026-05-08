@@ -9,6 +9,7 @@ from app.controllers.authController import AuthController
 from app.controllers.menuController import MenuController
 from app.controllers.forecastController import ForecastController
 from app.controllers.inventoryController import InventoryController
+from app.controllers.scannerController import ScannerController
 from app.core.cacheClient import getRedisClient
 from app.core.database import getSession
 from app.core.settings import loadSettings
@@ -18,6 +19,7 @@ from app.observers.aiStockObserver import AiStockObserver
 from app.observers.logStockObserver import LogStockObserver
 from app.observers.stockAlertPublisher import StockAlertPublisher
 from app.repositories.refreshTokenRepository import RefreshTokenRepository
+from app.repositories.stockRepository import StockRepository
 from app.repositories.transactionRepository import TransactionRepository
 from app.repositories.userRepository import UserRepository
 from app.services.authService import AuthService
@@ -25,6 +27,7 @@ from app.services.aiInsightService import AiInsightService
 from app.services.forecastService import ForecastService
 from app.services.inventoryService import InventoryService
 from app.services.menuService import MenuService
+from app.services.scannerService import ScannerService
 from app.strategies.prophetStrategy import ProphetStrategy
 from app.strategies.xgboostStrategy import XgboostStrategy
 
@@ -66,15 +69,36 @@ async def getAiController() -> AiController:
     return AiController(insightService)
 
 
+# dibantu AI: buildInventoryService
+def buildInventoryService(sessionValue: AsyncSession) -> InventoryService:
+    transactionRepository = TransactionRepository(sessionValue)
+    stockRepository = StockRepository(sessionValue)
+    return InventoryService(
+        transactionRepository=transactionRepository,
+        stockRepository=stockRepository,
+        sessionValue=sessionValue,
+    )
+
+
+# dibantu AI: getInventoryController
 async def getInventoryController(
     sessionValue: AsyncSession = Depends(getSession),
 ) -> InventoryController:
-    transactionRepository = TransactionRepository(sessionValue)
-    inventoryService = InventoryService(
-        transactionRepository=transactionRepository,
-        sessionValue=sessionValue,
-    )
+    inventoryService = buildInventoryService(sessionValue)
     return InventoryController(inventoryService)
+
+
+# dibantu AI: getScannerController
+async def getScannerController(
+    sessionValue: AsyncSession = Depends(getSession),
+) -> ScannerController:
+    settingsValue = loadSettings()
+    scannerService = ScannerService.getInstance(settingsValue.yoloModelPath)
+    inventoryService = buildInventoryService(sessionValue)
+    return ScannerController(
+        scannerService=scannerService,
+        inventoryService=inventoryService,
+    )
 
 
 # dibantu AI: getMenuController

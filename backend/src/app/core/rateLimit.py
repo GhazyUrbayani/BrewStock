@@ -45,6 +45,7 @@ class SlidingWindowLimiter:
 
 
 rateLimiterCache: SlidingWindowLimiter | None = None
+scannerRateLimiterCache: SlidingWindowLimiter | None = None
 
 
 # dibantu AI: getRateLimiter
@@ -63,3 +64,27 @@ async def getRateLimiter() -> SlidingWindowLimiter:
 async def enforceRateLimit(request: Request) -> None:
     rateLimiter = await getRateLimiter()
     await rateLimiter.applyLimit(request)
+
+
+# dibantu AI: getScannerRateLimiter
+async def getScannerRateLimiter() -> SlidingWindowLimiter:
+    global scannerRateLimiterCache
+    if scannerRateLimiterCache is None:
+        settings = loadSettings()
+        scannerRateLimiterCache = SlidingWindowLimiter(
+            requestLimit=settings.scannerRateLimitCount,
+            windowSeconds=settings.scannerRateLimitWindowSeconds,
+        )
+    return scannerRateLimiterCache
+
+
+# dibantu AI: enforceScannerRateLimit
+async def enforceScannerRateLimit(userId: int) -> None:
+    rateLimiter = await getScannerRateLimiter()
+    isAllowed = await rateLimiter.allowRequest(f"user:{userId}")
+    if not isAllowed:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Scanner rate limit exceeded",
+            headers={"Retry-After": str(rateLimiter.windowSeconds)},
+        )

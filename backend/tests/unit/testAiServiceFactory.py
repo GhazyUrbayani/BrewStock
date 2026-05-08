@@ -24,6 +24,9 @@ def testCreateServiceTypes() -> None:
         rateLimitCount=100,
         rateLimitWindowSeconds=60,
         forecastCacheTtlSeconds=3600,
+        yoloModelPath="ml/scanner/models/best.pt",
+        scannerRateLimitCount=10,
+        scannerRateLimitWindowSeconds=60,
     )
     factoryValue = AiServiceFactory(settingsValue)
 

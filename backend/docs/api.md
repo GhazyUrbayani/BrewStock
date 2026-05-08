@@ -17,8 +17,12 @@
 ## Forecast
 - `POST /api/v1/forecast/demand`
 
+## Scanner
+- `POST /api/v1/scanner/detect` (`multipart/form-data`, field `image`, optional `applyStockUpdate`)
+
 Headers:
 - `Authorization: Bearer <accessToken>`
 
 Rate limit:
 - `100 request/menit/IP`
+- `10 request/menit/user` untuk scanner

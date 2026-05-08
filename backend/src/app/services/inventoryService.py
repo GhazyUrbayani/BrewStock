@@ -3,9 +3,12 @@ from __future__ import annotations
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.transactionModel import TransactionRecord
+from app.repositories.stockRepository import StockRepository
 from app.repositories.transactionRepository import TransactionRepository
 from app.schemas.inventorySchema import (
     InventorySummaryResponse,
+    StockUpdateRequest,
+    StockUpdateResponse,
     TransactionCreateRequest,
     TransactionResponse,
 )
@@ -15,9 +18,11 @@ class InventoryService:
     def __init__(
         self,
         transactionRepository: TransactionRepository,
+        stockRepository: StockRepository,
         sessionValue: AsyncSession,
     ) -> None:
         self.transactionRepository = transactionRepository
+        self.stockRepository = stockRepository
         self.sessionValue = sessionValue
 
     async def createTransaction(
@@ -62,6 +67,23 @@ class InventoryService:
             )
             for itemValue in summaryItems
         ]
+
+    # Dibantu AI: updateCurrentStock
+    async def updateCurrentStock(
+        self,
+        skuId: str,
+        requestValue: StockUpdateRequest,
+    ) -> StockUpdateResponse:
+        stockValue = await self.stockRepository.upsertStock(
+            skuId=skuId,
+            currentStock=requestValue.currentStock,
+        )
+        await self.sessionValue.commit()
+        return StockUpdateResponse(
+            skuId=stockValue.skuId,
+            currentStock=stockValue.currentStock,
+            updatedAt=stockValue.updatedAt,
+        )
 
     def toTransactionResponse(self, transactionValue: TransactionRecord) -> TransactionResponse:
         return TransactionResponse(
