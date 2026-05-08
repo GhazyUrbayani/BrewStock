@@ -38,3 +38,18 @@ export type ForecastResponse = {
 }
 
 export type ForecastModelType = ForecastResponse['modelType']
+
+export type ForecastChartPoint = {
+  transactionDate: string
+  actualValue: number | null
+  predictedValue: number | null
+  lowerBound: number | null
+  upperBound: number | null
+}
+
+export type ForecastChartSeries = {
+  skuId: string
+  horizonDays: number
+  unitLabel: string
+  points: ForecastChartPoint[]
+}

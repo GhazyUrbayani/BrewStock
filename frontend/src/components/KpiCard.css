@@ -1,0 +1,116 @@
+.kpi-card {
+  background: #ffffff;
+  border: 1px solid #d7dde5;
+  border-radius: 8px;
+  box-shadow: 0 18px 50px rgba(17, 24, 39, 0.08);
+  display: grid;
+  gap: 10px;
+  height: 168px;
+  padding: 16px 18px;
+  width: 100%;
+}
+
+.kpi-card-header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.kpi-card-label {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.kpi-card-status {
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.kpi-card-status.positive {
+  background: #dcfce7;
+  color: #047857;
+}
+
+.kpi-card-status.negative {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+.kpi-card-value {
+  align-items: baseline;
+  display: flex;
+  gap: 6px;
+}
+
+.kpi-card-value strong {
+  color: #111827;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.kpi-card-unit {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.kpi-card-delta {
+  align-items: center;
+  display: flex;
+  font-size: 0.86rem;
+  font-weight: 700;
+  gap: 6px;
+}
+
+.kpi-card-delta.positive {
+  color: #047857;
+}
+
+.kpi-card-delta.negative {
+  color: #be123c;
+}
+
+.kpi-card-delta.neutral {
+  color: #64748b;
+}
+
+.kpi-card-delta-icon {
+  height: 14px;
+  width: 14px;
+}
+
+.kpi-card-delta-icon.down {
+  transform: rotate(180deg);
+}
+
+.kpi-card-delta-percent {
+  font-weight: 800;
+}
+
+.kpi-card-target {
+  align-items: center;
+  border-top: 1px dashed #e2e8f0;
+  color: #64748b;
+  display: flex;
+  font-size: 0.78rem;
+  font-weight: 700;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+
+.kpi-card-target-label {
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.kpi-card-target-value {
+  color: #111827;
+  font-weight: 800;
+}
