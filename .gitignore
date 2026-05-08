@@ -5,6 +5,9 @@ backend/.venv/
 backend/.pytest_cache/
 .DS_Store
 
+# ML raw datasets (download separately)
+ml/forecast/data/raw/
+
 # frontend build artifacts
 frontend/node_modules/
 frontend/dist/

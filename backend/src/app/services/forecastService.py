@@ -32,7 +32,7 @@ class ForecastService:
         self.alertPublisher = alertPublisher
         self.cacheTtlSeconds = loadSettings().forecastCacheTtlSeconds
 
-    # Dibantu AI: generateForecast
+    # dibantu AI: generateForecast
     async def generateForecast(self, requestValue: ForecastRequest) -> ForecastResponse:
         strategyValue = self.strategyMap.get(requestValue.modelType)
         if strategyValue is None:
@@ -57,7 +57,7 @@ class ForecastService:
         )
         return responseValue
 
-    # Dibantu AI: resolveHistoryData
+    # dibantu AI: resolveHistoryData
     async def resolveHistoryData(self, requestValue: ForecastRequest) -> list[DemandHistoryData]:
         if requestValue.historyData:
             return [
@@ -73,7 +73,7 @@ class ForecastService:
             raise ValueError("History data missing")
         return repositoryHistory
 
-    # Dibantu AI: buildResponseValue
+    # dibantu AI: buildResponseValue
     async def buildResponseValue(
         self,
         requestValue: ForecastRequest,
@@ -108,7 +108,7 @@ class ForecastService:
             recommendedRestock=round(recommendedRestock, 2),
         )
 
-    # Dibantu AI: buildCacheKey
+    # dibantu AI: buildCacheKey
     def buildCacheKey(
         self,
         requestValue: ForecastRequest,
@@ -125,7 +125,7 @@ class ForecastService:
             f"{requestValue.stockThreshold}:{digestValue}"
         )
 
-    # Dibantu AI: serializeResponse
+    # dibantu AI: serializeResponse
     def serializeResponse(self, responseValue: ForecastResponse) -> str:
         payloadValue = {
             "skuId": responseValue.skuId,
@@ -144,7 +144,7 @@ class ForecastService:
         }
         return json.dumps(payloadValue)
 
-    # Dibantu AI: readCachedResponse
+    # dibantu AI: readCachedResponse
     def readCachedResponse(self, requestValue: ForecastRequest, cachedPayload: str) -> ForecastResponse:
         payloadValue = json.loads(cachedPayload)
         return ForecastResponse(

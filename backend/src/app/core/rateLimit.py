@@ -15,7 +15,7 @@ class SlidingWindowLimiter:
         self.windowSeconds = windowSeconds
         self.windowMillis = windowSeconds * 1000
 
-    # Dibantu AI: allowRequest
+    # dibantu AI: allowRequest
     async def allowRequest(self, ipAddress: str) -> bool:
         redisClient = await getRedisClient()
         nowMillis = int(time.time() * 1000)
@@ -32,7 +32,7 @@ class SlidingWindowLimiter:
         _, requestCount, _, _ = await pipelineValue.execute()
         return int(requestCount) < self.requestLimit
 
-    # Dibantu AI: applyLimit
+    # dibantu AI: applyLimit
     async def applyLimit(self, request: Request) -> None:
         ipAddress = request.client.host if request.client else "unknown"
         isAllowed = await self.allowRequest(ipAddress)
@@ -47,7 +47,7 @@ class SlidingWindowLimiter:
 rateLimiterCache: SlidingWindowLimiter | None = None
 
 
-# Dibantu AI: getRateLimiter
+# dibantu AI: getRateLimiter
 async def getRateLimiter() -> SlidingWindowLimiter:
     global rateLimiterCache
     if rateLimiterCache is None:
@@ -59,7 +59,7 @@ async def getRateLimiter() -> SlidingWindowLimiter:
     return rateLimiterCache
 
 
-# Dibantu AI: enforceRateLimit
+# dibantu AI: enforceRateLimit
 async def enforceRateLimit(request: Request) -> None:
     rateLimiter = await getRateLimiter()
     await rateLimiter.applyLimit(request)

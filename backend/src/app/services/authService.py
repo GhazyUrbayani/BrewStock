@@ -31,7 +31,7 @@ class AuthService:
         self.sessionValue = sessionValue
         self.settingsValue = loadSettings()
 
-    # Dibantu AI: registerUser
+    # dibantu AI: registerUser
     async def registerUser(self, requestValue: RegisterRequest) -> TokenResponse:
         existingUser = await self.userRepository.findByEmail(requestValue.email)
         if existingUser is not None:
@@ -46,7 +46,7 @@ class AuthService:
         await self.sessionValue.commit()
         return tokenValue
 
-    # Dibantu AI: loginUser
+    # dibantu AI: loginUser
     async def loginUser(self, requestValue: LoginRequest) -> TokenResponse:
         userValue = await self.userRepository.findByEmail(requestValue.email)
         if userValue is None:
@@ -59,7 +59,7 @@ class AuthService:
         await self.sessionValue.commit()
         return tokenValue
 
-    # Dibantu AI: refreshSession
+    # dibantu AI: refreshSession
     async def refreshSession(self, requestValue: RefreshRequest) -> TokenResponse:
         payloadValue = readToken(requestValue.refreshToken)
         if payloadValue.get("typ") != "refresh":
@@ -83,7 +83,7 @@ class AuthService:
         await self.sessionValue.commit()
         return tokenValue
 
-    # Dibantu AI: issueTokens
+    # dibantu AI: issueTokens
     async def issueTokens(self, userId: int) -> TokenResponse:
         accessTokenValue = createAccessToken(str(userId))
         refreshTokenValue, tokenId = createRefreshToken(str(userId))
@@ -103,6 +103,6 @@ class AuthService:
             tokenType="bearer",
         )
 
-    # Dibantu AI: hashTokenValue
+    # dibantu AI: hashTokenValue
     def hashTokenValue(self, rawToken: str) -> str:
         return hashlib.sha256(rawToken.encode("utf-8")).hexdigest()

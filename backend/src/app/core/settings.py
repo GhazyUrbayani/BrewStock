@@ -26,20 +26,20 @@ class AppSettings:
 settingsCache: AppSettings | None = None
 
 
-# Dibantu AI: parseIntValue
+# dibantu AI: parseIntValue
 def parseIntValue(rawValue: str | None, defaultValue: int) -> int:
     if rawValue is None or rawValue == "":
         return defaultValue
     return int(rawValue)
 
 
-# Dibantu AI: splitOriginsValue
+# dibantu AI: splitOriginsValue
 def splitOriginsValue(rawValue: str) -> List[str]:
     originItems = [origin.strip() for origin in rawValue.split(",")]
     return [origin for origin in originItems if origin]
 
 
-# Dibantu AI: loadSettings
+# dibantu AI: loadSettings
 def loadSettings() -> AppSettings:
     global settingsCache
     if settingsCache is not None:

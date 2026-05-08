@@ -12,7 +12,7 @@ class RefreshTokenRepository:
     def __init__(self, sessionValue: AsyncSession) -> None:
         self.sessionValue = sessionValue
 
-    # Dibantu AI: createTokenRecord
+    # dibantu AI: createTokenRecord
     async def createTokenRecord(
         self,
         tokenId: str,
@@ -31,7 +31,7 @@ class RefreshTokenRepository:
         await self.sessionValue.refresh(tokenValue)
         return tokenValue
 
-    # Dibantu AI: findActiveByHash
+    # dibantu AI: findActiveByHash
     async def findActiveByHash(self, tokenHash: str) -> RefreshTokenRecord | None:
         nowValue = datetime.now(timezone.utc)
         queryValue = select(RefreshTokenRecord).where(
@@ -42,7 +42,7 @@ class RefreshTokenRepository:
         resultValue = await self.sessionValue.execute(queryValue)
         return resultValue.scalar_one_or_none()
 
-    # Dibantu AI: revokeByTokenId
+    # dibantu AI: revokeByTokenId
     async def revokeByTokenId(self, tokenId: str) -> None:
         queryValue = select(RefreshTokenRecord).where(RefreshTokenRecord.tokenId == tokenId)
         resultValue = await self.sessionValue.execute(queryValue)
@@ -50,7 +50,7 @@ class RefreshTokenRepository:
         if tokenValue is not None and tokenValue.revokedAt is None:
             tokenValue.revokedAt = datetime.now(timezone.utc)
 
-    # Dibantu AI: revokeByUserId
+    # dibantu AI: revokeByUserId
     async def revokeByUserId(self, userId: int) -> None:
         queryValue = select(RefreshTokenRecord).where(
             RefreshTokenRecord.userId == userId,

@@ -15,7 +15,7 @@ from app.routes.inventoryRoutes import inventoryRouter
 settingsValue = loadSettings()
 
 
-# Dibantu AI: lifespan
+# dibantu AI: lifespan
 @asynccontextmanager
 async def lifespan(appValue: FastAPI):
     async with asyncEngine.begin() as connectionValue:
@@ -47,6 +47,6 @@ app.include_router(forecastRouter)
 
 
 @app.get("/health")
-# Dibantu AI: readHealth
+# dibantu AI: readHealth
 async def readHealth() -> dict[str, str]:
     return {"status": "ok"}

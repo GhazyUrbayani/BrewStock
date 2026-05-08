@@ -15,7 +15,7 @@ authRouter = APIRouter(prefix="/api/v1/auth", tags=["auth"])
     response_model=TokenResponse,
     dependencies=[Depends(enforceRateLimit)],
 )
-# Dibantu AI: registerUser
+# dibantu AI: registerUser
 async def registerUser(
     requestValue: RegisterRequest,
     controllerValue: AuthController = Depends(getAuthController),
@@ -28,7 +28,7 @@ async def registerUser(
     response_model=TokenResponse,
     dependencies=[Depends(enforceRateLimit)],
 )
-# Dibantu AI: loginUser
+# dibantu AI: loginUser
 async def loginUser(
     requestValue: LoginRequest,
     controllerValue: AuthController = Depends(getAuthController),
@@ -41,7 +41,7 @@ async def loginUser(
     response_model=TokenResponse,
     dependencies=[Depends(enforceRateLimit)],
 )
-# Dibantu AI: refreshSession
+# dibantu AI: refreshSession
 async def refreshSession(
     requestValue: RefreshRequest,
     controllerValue: AuthController = Depends(getAuthController),

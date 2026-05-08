@@ -17,7 +17,7 @@ class DenyLimiter(SlidingWindowLimiter):
         return False
 
 
-# Dibantu AI: buildRequest
+# dibantu AI: buildRequest
 def buildRequest() -> Request:
     scopeValue = {
         "type": "http",
@@ -34,7 +34,7 @@ def buildRequest() -> Request:
 
 
 @pytest.mark.asyncio
-# Dibantu AI: testApplyLimitAllows
+# dibantu AI: testApplyLimitAllows
 async def testApplyLimitAllows() -> None:
     limiterValue = AllowLimiter(requestLimit=100, windowSeconds=60)
     requestValue = buildRequest()
@@ -43,7 +43,7 @@ async def testApplyLimitAllows() -> None:
 
 
 @pytest.mark.asyncio
-# Dibantu AI: testApplyLimitBlocks
+# dibantu AI: testApplyLimitBlocks
 async def testApplyLimitBlocks() -> None:
     limiterValue = DenyLimiter(requestLimit=100, windowSeconds=60)
     requestValue = buildRequest()

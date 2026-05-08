@@ -4,6 +4,6 @@ from app.services.ai.aiService import AiService
 
 
 class NoopAiService(AiService):
-    # Dibantu AI: generateInsight
+    # dibantu AI: generateInsight
     async def generateInsight(self, promptValue: str) -> str:
         return "AI provider unavailable"

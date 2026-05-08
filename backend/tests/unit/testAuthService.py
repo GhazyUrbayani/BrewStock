@@ -95,7 +95,7 @@ class FakeRefreshTokenRepository(RefreshTokenRepository):
 
 
 @pytest.mark.asyncio
-# Dibantu AI: testRegisterAndLogin
+# dibantu AI: testRegisterAndLogin
 async def testRegisterAndLogin() -> None:
     sessionValue = FakeSession()
     userRepository = FakeUserRepository()
@@ -120,7 +120,7 @@ async def testRegisterAndLogin() -> None:
 
 
 @pytest.mark.asyncio
-# Dibantu AI: testRefreshRotation
+# dibantu AI: testRefreshRotation
 async def testRefreshRotation() -> None:
     sessionValue = FakeSession()
     userRepository = FakeUserRepository()

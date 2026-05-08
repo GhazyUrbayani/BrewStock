@@ -15,7 +15,7 @@ forecastRouter = APIRouter(prefix="/api/v1/forecast", tags=["forecast"])
     response_model=ForecastResponse,
     dependencies=[Depends(enforceRateLimit), Depends(readCurrentUserId)],
 )
-# Dibantu AI: createDemandForecast
+# dibantu AI: createDemandForecast
 async def createDemandForecast(
     requestValue: ForecastRequest,
     controllerValue: ForecastController = Depends(getForecastController),

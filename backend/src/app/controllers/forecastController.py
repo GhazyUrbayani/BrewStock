@@ -10,7 +10,7 @@ class ForecastController:
     def __init__(self, forecastService: ForecastService) -> None:
         self.forecastService = forecastService
 
-    # Dibantu AI: createForecast
+    # dibantu AI: createForecast
     async def createForecast(self, requestValue: ForecastRequest) -> ForecastResponse:
         try:
             return await self.forecastService.generateForecast(requestValue)

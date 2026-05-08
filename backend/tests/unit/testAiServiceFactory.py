@@ -7,7 +7,7 @@ from app.services.ai.gptAiService import GptAiService
 from app.services.ai.noopAiService import NoopAiService
 
 
-# Dibantu AI: testCreateServiceTypes
+# dibantu AI: testCreateServiceTypes
 def testCreateServiceTypes() -> None:
     settingsValue = AppSettings(
         appName="BrewStock API",

@@ -113,7 +113,7 @@ CacheClient = Redis | InMemoryCacheClient
 redisClientCache: CacheClient | None = None
 
 
-# Dibantu AI: getRedisClient
+# dibantu AI: getRedisClient
 async def getRedisClient() -> CacheClient:
     global redisClientCache
     if redisClientCache is None:

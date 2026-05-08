@@ -10,7 +10,7 @@ class AuthController:
     def __init__(self, authService: AuthService) -> None:
         self.authService = authService
 
-    # Dibantu AI: registerUser
+    # dibantu AI: registerUser
     async def registerUser(self, requestValue: RegisterRequest) -> TokenResponse:
         try:
             return await self.authService.registerUser(requestValue)
@@ -20,7 +20,7 @@ class AuthController:
                 detail=str(errorValue),
             ) from errorValue
 
-    # Dibantu AI: loginUser
+    # dibantu AI: loginUser
     async def loginUser(self, requestValue: LoginRequest) -> TokenResponse:
         try:
             return await self.authService.loginUser(requestValue)
@@ -30,7 +30,7 @@ class AuthController:
                 detail=str(errorValue),
             ) from errorValue
 
-    # Dibantu AI: refreshSession
+    # dibantu AI: refreshSession
     async def refreshSession(self, requestValue: RefreshRequest) -> TokenResponse:
         try:
             return await self.authService.refreshSession(requestValue)

@@ -11,7 +11,7 @@ class AiServiceFactory:
     def __init__(self, settingsValue: AppSettings | None = None) -> None:
         self.settingsValue = settingsValue or loadSettings()
 
-    # Dibantu AI: createService
+    # dibantu AI: createService
     def createService(self, providerName: str) -> AiService:
         normalizedProvider = providerName.lower()
 

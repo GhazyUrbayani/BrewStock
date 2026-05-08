@@ -12,17 +12,17 @@ from app.core.settings import loadSettings
 passwordContext = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
-# Dibantu AI: hashSecret
+# dibantu AI: hashSecret
 def hashSecret(rawSecret: str) -> str:
     return passwordContext.hash(rawSecret)
 
 
-# Dibantu AI: verifySecret
+# dibantu AI: verifySecret
 def verifySecret(rawSecret: str, hashedSecret: str) -> bool:
     return passwordContext.verify(rawSecret, hashedSecret)
 
 
-# Dibantu AI: buildToken
+# dibantu AI: buildToken
 def buildToken(userId: str, tokenType: str, expireMinutes: int, tokenId: str | None = None) -> str:
     settings = loadSettings()
     expireAt = datetime.now(timezone.utc) + timedelta(minutes=expireMinutes)
@@ -32,7 +32,7 @@ def buildToken(userId: str, tokenType: str, expireMinutes: int, tokenId: str | N
     return jwt.encode(payload, settings.jwtSecret, algorithm=settings.jwtAlgorithm)
 
 
-# Dibantu AI: readToken
+# dibantu AI: readToken
 def readToken(rawToken: str) -> Dict[str, Any]:
     settings = loadSettings()
     try:
@@ -41,13 +41,13 @@ def readToken(rawToken: str) -> Dict[str, Any]:
         raise ValueError("Invalid token") from errorValue
 
 
-# Dibantu AI: createAccessToken
+# dibantu AI: createAccessToken
 def createAccessToken(userId: str) -> str:
     settings = loadSettings()
     return buildToken(userId=userId, tokenType="access", expireMinutes=settings.accessTokenMinutes)
 
 
-# Dibantu AI: createRefreshToken
+# dibantu AI: createRefreshToken
 def createRefreshToken(userId: str) -> tuple[str, str]:
     settings = loadSettings()
     tokenId = secrets.token_urlsafe(24)

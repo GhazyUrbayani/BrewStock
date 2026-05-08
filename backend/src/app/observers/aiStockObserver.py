@@ -13,7 +13,7 @@ class AiStockObserver(StockAlertObserver):
     def __init__(self, aiService: AiService) -> None:
         self.aiService = aiService
 
-    # Dibantu AI: handleStockAlert
+    # dibantu AI: handleStockAlert
     async def handleStockAlert(self, eventValue: StockAlertEvent) -> None:
         promptValue = (
             "Buat insight restock singkat untuk coffee shop. "

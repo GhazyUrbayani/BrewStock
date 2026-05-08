@@ -57,7 +57,7 @@ class CollectingObserver(StockAlertObserver):
 
 
 @pytest.mark.asyncio
-# Dibantu AI: testGenerateForecastCachesResult
+# dibantu AI: testGenerateForecastCachesResult
 async def testGenerateForecastCachesResult() -> None:
     strategyValue = FakeStrategy()
     cacheValue = FakeCache()
@@ -95,7 +95,7 @@ async def testGenerateForecastCachesResult() -> None:
 
 
 @pytest.mark.asyncio
-# Dibantu AI: testGenerateForecastUsesRepository
+# dibantu AI: testGenerateForecastUsesRepository
 async def testGenerateForecastUsesRepositoryWhenHistoryEmpty() -> None:
     strategyValue = FakeStrategy()
     cacheValue = FakeCache()

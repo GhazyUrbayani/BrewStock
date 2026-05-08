@@ -10,7 +10,7 @@ from app.core.sanitizer import sanitizeAnyValue
 class SanitizedModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    # Dibantu AI: sanitizeValues
+    # dibantu AI: sanitizeValues
     @model_validator(mode="before")
     @classmethod
     def sanitizeValues(cls, inputValue: Any) -> Any:

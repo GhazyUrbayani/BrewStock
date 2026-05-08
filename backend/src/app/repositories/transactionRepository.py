@@ -68,7 +68,7 @@ class TransactionRepository:
         resultValue = await self.sessionValue.execute(queryValue)
         return [dict(rowValue._mapping) for rowValue in resultValue.all()]
 
-    # Dibantu AI: fetchHistoryBySku
+    # dibantu AI: fetchHistoryBySku
     async def fetchHistoryBySku(self, skuId: str) -> list[DemandHistoryData]:
         queryValue = (
             select(TransactionRecord)

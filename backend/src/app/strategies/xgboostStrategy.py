@@ -14,7 +14,7 @@ except Exception:
 
 
 class XgboostStrategy(ForecastStrategy):
-    # Dibantu AI: runForecast
+    # dibantu AI: runForecast
     async def runForecast(
         self,
         historyData: list[DemandHistoryData],
@@ -26,7 +26,7 @@ class XgboostStrategy(ForecastStrategy):
         sortedHistory = sorted(historyData, key=lambda itemValue: itemValue.transactionDate)
         return await asyncio.to_thread(self.predictValues, sortedHistory, horizonDays)
 
-    # Dibantu AI: predictValues
+    # dibantu AI: predictValues
     def predictValues(
         self,
         historyData: list[DemandHistoryData],

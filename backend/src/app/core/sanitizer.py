@@ -6,7 +6,7 @@ from typing import Any
 blockedFragments = ["<script", "</script", "javascript:", "onerror=", "onload="]
 
 
-# Dibantu AI: sanitizeStringValue
+# dibantu AI: sanitizeStringValue
 def sanitizeStringValue(rawValue: str) -> str:
     normalizedValue = html.escape(rawValue.strip(), quote=True)
     loweredValue = normalizedValue.lower()
@@ -16,7 +16,7 @@ def sanitizeStringValue(rawValue: str) -> str:
     return normalizedValue
 
 
-# Dibantu AI: sanitizeAnyValue
+# dibantu AI: sanitizeAnyValue
 def sanitizeAnyValue(rawValue: Any) -> Any:
     if isinstance(rawValue, str):
         return sanitizeStringValue(rawValue)

@@ -26,7 +26,7 @@ from app.strategies.xgboostStrategy import XgboostStrategy
 httpBearer = HTTPBearer()
 
 
-# Dibantu AI: getForecastController
+# dibantu AI: getForecastController
 async def getForecastController(
     sessionValue: AsyncSession = Depends(getSession),
 ) -> ForecastController:
@@ -62,7 +62,7 @@ async def getInventoryController(
     return InventoryController(inventoryService)
 
 
-# Dibantu AI: getAuthController
+# dibantu AI: getAuthController
 async def getAuthController(
     sessionValue: AsyncSession = Depends(getSession),
 ) -> AuthController:
@@ -76,7 +76,7 @@ async def getAuthController(
     return AuthController(authService)
 
 
-# Dibantu AI: readCurrentUserId
+# dibantu AI: readCurrentUserId
 async def readCurrentUserId(
     authValue: HTTPAuthorizationCredentials = Depends(httpBearer),
 ) -> int:

@@ -9,7 +9,7 @@ class GptAiService(AiService):
     def __init__(self, apiKey: str) -> None:
         self.apiKey = apiKey
 
-    # Dibantu AI: generateInsight
+    # dibantu AI: generateInsight
     async def generateInsight(self, promptValue: str) -> str:
         if self.apiKey == "":
             return "GPT key missing"

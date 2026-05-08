@@ -15,7 +15,7 @@ except Exception:
 
 
 class ProphetStrategy(ForecastStrategy):
-    # Dibantu AI: runForecast
+    # dibantu AI: runForecast
     async def runForecast(
         self,
         historyData: list[DemandHistoryData],
@@ -50,7 +50,7 @@ class ProphetStrategy(ForecastStrategy):
 
         return pointItems[:horizonDays]
 
-    # Dibantu AI: predictFrame
+    # dibantu AI: predictFrame
     def predictFrame(self, frameValue: pd.DataFrame, horizonDays: int) -> pd.DataFrame:
         modelValue = Prophet(
             yearly_seasonality=True,

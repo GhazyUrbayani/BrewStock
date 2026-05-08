@@ -17,7 +17,7 @@ asyncEngine: AsyncEngine = createAsyncEngine(settings.databaseUrl, pool_pre_ping
 sessionFactory = sessionmaker(bind=asyncEngine, class_=AsyncSession, expire_on_commit=False)
 
 
-# Dibantu AI: getSession
+# dibantu AI: getSession
 async def getSession() -> AsyncGenerator[AsyncSession, None]:
     sessionValue: AsyncSession = sessionFactory()
     try:

@@ -9,7 +9,7 @@ loggerValue = logging.getLogger("brewStock")
 
 
 class LogStockObserver(StockAlertObserver):
-    # Dibantu AI: handleStockAlert
+    # dibantu AI: handleStockAlert
     async def handleStockAlert(self, eventValue: StockAlertEvent) -> None:
         loggerValue.warning(
             "Stock alert sku=%s current=%.2f demand=%.2f restock=%.2f",
