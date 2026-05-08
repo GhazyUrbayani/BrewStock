@@ -1,5 +1,6 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { ApiError, apiRequest } from './api'
+import AlertPanel from './components/AlertPanel'
 import './App.css'
 import type {
   AuthMode,
@@ -462,6 +463,8 @@ function App() {
       </section>
 
       <StatusStrip healthState={healthState} notice={notice} onRetry={checkHealth} />
+
+      <AlertPanel authRequest={authRequest} />
 
       <section className="workspace-grid">
         <div className="panel">

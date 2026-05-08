@@ -39,6 +39,15 @@ export type ForecastResponse = {
 
 export type ForecastModelType = ForecastResponse['modelType']
 
+export type InventoryAlert = {
+  alertId?: string
+  skuId: string
+  currentStock: number
+  projectedDemand: number
+  recommendedRestock: number
+  createdAt?: string
+}
+
 export type ForecastChartPoint = {
   transactionDate: string
   actualValue: number | null

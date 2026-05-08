@@ -1,0 +1,28 @@
+.alert-badge {
+  align-items: center;
+  background: #e2e8f0;
+  border-radius: 999px;
+  color: #334155;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 800;
+  height: 28px;
+  justify-content: center;
+  min-width: 36px;
+  padding: 0 10px;
+}
+
+.alert-badge.neutral {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.alert-badge.warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.alert-badge.critical {
+  background: #ffe4e6;
+  color: #be123c;
+}
