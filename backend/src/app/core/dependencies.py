@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.controllers.aiController import AiController
 from app.controllers.authController import AuthController
+from app.controllers.menuController import MenuController
 from app.controllers.forecastController import ForecastController
 from app.controllers.inventoryController import InventoryController
 from app.core.cacheClient import getRedisClient
@@ -23,6 +24,7 @@ from app.services.authService import AuthService
 from app.services.aiInsightService import AiInsightService
 from app.services.forecastService import ForecastService
 from app.services.inventoryService import InventoryService
+from app.services.menuService import MenuService
 from app.strategies.prophetStrategy import ProphetStrategy
 from app.strategies.xgboostStrategy import XgboostStrategy
 
@@ -73,6 +75,12 @@ async def getInventoryController(
         sessionValue=sessionValue,
     )
     return InventoryController(inventoryService)
+
+
+# dibantu AI: getMenuController
+async def getMenuController() -> MenuController:
+    menuService = MenuService()
+    return MenuController(menuService)
 
 
 # dibantu AI: getAuthController

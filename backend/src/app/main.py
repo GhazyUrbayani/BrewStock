@@ -12,6 +12,7 @@ from app.routes.aiRoutes import aiRouter
 from app.routes.authRoutes import authRouter
 from app.routes.forecastRoutes import forecastRouter
 from app.routes.inventoryRoutes import inventoryRouter
+from app.routes.menuRoutes import menuRouter
 
 settingsValue = loadSettings()
 
@@ -46,6 +47,7 @@ app.include_router(authRouter)
 app.include_router(inventoryRouter)
 app.include_router(forecastRouter)
 app.include_router(aiRouter)
+app.include_router(menuRouter)
 
 
 @app.get("/health")
