@@ -2,10 +2,12 @@ import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ApiError, apiRequest } from './api'
 import AlertPanel from './components/AlertPanel'
 import AssistantPage from './pages/AssistantPage'
+import ForecastChartPage from './pages/ForecastChartPage'
 import ScannerPage from './pages/ScannerPage'
 import './App.css'
 import type {
   AuthMode,
+  ForecastChartSeries,
   ForecastModelType,
   ForecastResponse,
   InventorySummary,
@@ -252,6 +254,26 @@ function App() {
       averagePerSku: summaryItems.length === 0 ? 0 : totalDemand / summaryItems.length,
     }
   }, [summaryItems])
+
+  const forecastChartSeries = useMemo<ForecastChartSeries[]>(() => {
+    if (!forecastResult || forecastResult.points.length === 0) {
+      return []
+    }
+    return [
+      {
+        skuId: forecastResult.skuId,
+        horizonDays: forecastResult.points.length,
+        unitLabel: 'unit',
+        points: forecastResult.points.map((pointValue) => ({
+          transactionDate: pointValue.transactionDate,
+          actualValue: null,
+          predictedValue: pointValue.forecastQuantity,
+          lowerBound: null,
+          upperBound: null,
+        })),
+      },
+    ]
+  }, [forecastResult])
 
   async function handleAuthSubmit(eventValue: FormEvent<HTMLFormElement>) {
     eventValue.preventDefault()
@@ -677,6 +699,11 @@ function App() {
           </dl>
         </div>
       </section>
+
+      <ForecastChartPage
+        series={forecastChartSeries}
+        isLoading={isForecasting}
+      />
 
       <section className="data-grid">
         <div className="panel">

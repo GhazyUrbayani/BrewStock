@@ -37,3 +37,11 @@ class StockUpdateResponse(SanitizedModel):
     skuId: str
     currentStock: float
     updatedAt: datetime
+
+
+class InventoryAlertResponse(SanitizedModel):
+    skuId: str
+    currentStock: float
+    projectedDemand: float
+    recommendedRestock: float
+    createdAt: datetime | None = None

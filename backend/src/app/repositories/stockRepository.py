@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.stockItemModel import StockItem
@@ -23,3 +24,8 @@ class StockRepository:
         await self.sessionValue.flush()
         await self.sessionValue.refresh(stockValue)
         return stockValue
+
+    # Dibantu AI: listAllStocks
+    async def listAllStocks(self) -> list[StockItem]:
+        resultValue = await self.sessionValue.execute(select(StockItem))
+        return list(resultValue.scalars().all())

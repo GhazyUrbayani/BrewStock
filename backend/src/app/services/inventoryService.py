@@ -6,6 +6,7 @@ from app.models.transactionModel import TransactionRecord
 from app.repositories.stockRepository import StockRepository
 from app.repositories.transactionRepository import TransactionRepository
 from app.schemas.inventorySchema import (
+    InventoryAlertResponse,
     InventorySummaryResponse,
     StockUpdateRequest,
     StockUpdateResponse,
@@ -84,6 +85,34 @@ class InventoryService:
             currentStock=stockValue.currentStock,
             updatedAt=stockValue.updatedAt,
         )
+
+    # dibantu AI: listAlerts
+    async def listAlerts(self) -> list[InventoryAlertResponse]:
+        summaryItems = await self.transactionRepository.summarizeBySku()
+        stockItems = await self.stockRepository.listAllStocks()
+
+        stockMap: dict[str, float] = {}
+        for stockValue in stockItems:
+            stockMap[stockValue.skuId] = float(stockValue.currentStock)
+
+        alertItems: list[InventoryAlertResponse] = []
+        for itemValue in summaryItems:
+            skuId = str(itemValue["skuId"])
+            averageDemand = float(itemValue["averageDemand"] or 0)
+            projectedDemand = round(averageDemand * 7, 2)
+            currentStock = stockMap.get(skuId, 0.0)
+            recommendedRestock = round(max(0.0, projectedDemand - currentStock), 2)
+
+            alertItems.append(
+                InventoryAlertResponse(
+                    skuId=skuId,
+                    currentStock=currentStock,
+                    projectedDemand=projectedDemand,
+                    recommendedRestock=recommendedRestock,
+                )
+            )
+
+        return alertItems
 
     def toTransactionResponse(self, transactionValue: TransactionRecord) -> TransactionResponse:
         return TransactionResponse(

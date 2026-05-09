@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import HTTPException, status
 
+from app.schemas.inventorySchema import StockUpdateRequest
 from app.schemas.scannerSchema import (
     ScannerBoundingBoxOutput,
     ScannerDetectionOutput,
@@ -15,14 +18,17 @@ class ScannerController:
     def __init__(
         self,
         scannerService: ScannerService,
+        inventoryService: Any | None = None,
     ) -> None:
         self.scannerService = scannerService
+        self.inventoryService = inventoryService
 
     # dibantu AI: detectStock
     async def detectStock(
         self,
         imageBytes: bytes,
         contentType: str | None,
+        applyStockUpdate: bool = False,
     ) -> ScannerResponse:
         if imageBytes == b"":
             raise HTTPException(
@@ -54,7 +60,7 @@ class ScannerController:
 
         resultValue = await self.scannerService.runDetection(imageBytes)
 
-        return ScannerResponse(
+        responseValue = ScannerResponse(
             detections=[
                 ScannerDetectionOutput(
                     className=itemValue.className,
@@ -83,6 +89,21 @@ class ScannerController:
                 for itemValue in resultValue.suggestedStockUpdate
             ],
         )
+
+        # dibantu AI: applyStockUpdates
+        if applyStockUpdate:
+            if self.inventoryService is None:
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Inventory service unavailable",
+                )
+            for itemValue in resultValue.suggestedStockUpdate:
+                await self.inventoryService.updateCurrentStock(
+                    itemValue.skuId,
+                    StockUpdateRequest(currentStock=float(itemValue.detectedCount)),
+                )
+
+        return responseValue
 
     # dibantu AI: readImageType
     def readImageType(self, imageBytes: bytes) -> str | None:

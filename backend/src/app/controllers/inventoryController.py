@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import HTTPException, status
 
 from app.schemas.inventorySchema import (
+    InventoryAlertResponse,
     InventorySummaryResponse,
     StockUpdateRequest,
     StockUpdateResponse,
@@ -38,6 +39,9 @@ class InventoryController:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=str(errorValue),
             ) from errorValue
+
+    async def listAlerts(self) -> list[InventoryAlertResponse]:
+        return await self.inventoryService.listAlerts()
 
     async def listSummaries(self) -> list[InventorySummaryResponse]:
         return await self.inventoryService.listSummaries()
