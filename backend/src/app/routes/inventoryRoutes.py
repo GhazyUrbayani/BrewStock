@@ -6,6 +6,7 @@ from app.controllers.inventoryController import InventoryController
 from app.core.dependencies import getInventoryController, readCurrentUserId
 from app.core.rateLimit import enforceRateLimit
 from app.schemas.inventorySchema import (
+    DashboardKpiResponse,
     InventoryAlertResponse,
     InventorySummaryResponse,
     StockUpdateRequest,
@@ -62,6 +63,17 @@ async def listSummaries(
     controllerValue: InventoryController = Depends(getInventoryController),
 ) -> list[InventorySummaryResponse]:
     return await controllerValue.listSummaries()
+
+
+@inventoryRouter.get(
+    "/kpi",
+    response_model=DashboardKpiResponse,
+    dependencies=[Depends(enforceRateLimit), Depends(readCurrentUserId)],
+)
+async def getDashboardKpi(
+    controllerValue: InventoryController = Depends(getInventoryController),
+) -> DashboardKpiResponse:
+    return await controllerValue.getDashboardKpi()
 
 
 @inventoryRouter.get(

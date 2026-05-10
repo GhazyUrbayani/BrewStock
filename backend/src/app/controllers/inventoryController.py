@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import HTTPException, status
 
 from app.schemas.inventorySchema import (
+    DashboardKpiResponse,
     InventoryAlertResponse,
     InventorySummaryResponse,
     StockUpdateRequest,
@@ -45,6 +46,9 @@ class InventoryController:
 
     async def listSummaries(self) -> list[InventorySummaryResponse]:
         return await self.inventoryService.listSummaries()
+
+    async def getDashboardKpi(self) -> DashboardKpiResponse:
+        return await self.inventoryService.getDashboardKpi()
 
     # Dibantu AI: updateStock
     async def updateStock(

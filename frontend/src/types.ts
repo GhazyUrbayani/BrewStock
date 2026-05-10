@@ -95,3 +95,17 @@ export type StockUpdateResponse = {
   currentStock: number
   updatedAt: string
 }
+
+export type KpiCardType = {
+  label: string
+  value: string
+  trend: string
+  trendDirection: 'up' | 'down' | 'neutral'
+  targetText: string
+  statusBadge: string
+  statusCondition: 'good' | 'warning' | 'critical'
+}
+
+export type DashboardKpiResponse = {
+  kpiCards: KpiCardType[]
+}

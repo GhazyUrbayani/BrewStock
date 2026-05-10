@@ -84,7 +84,7 @@ export async function apiRequest<TResponse>(
       optionsValue.body === undefined
         ? undefined
         : isFormData
-          ? optionsValue.body
+          ? (optionsValue.body as FormData)
           : JSON.stringify(optionsValue.body),
   })
 

@@ -45,3 +45,17 @@ class InventoryAlertResponse(SanitizedModel):
     projectedDemand: float
     recommendedRestock: float
     createdAt: datetime | None = None
+
+
+class KpiCardResponse(SanitizedModel):
+    label: str
+    value: str
+    trend: str
+    trendDirection: str
+    targetText: str
+    statusBadge: str
+    statusCondition: str
+
+
+class DashboardKpiResponse(SanitizedModel):
+    kpiCards: list[KpiCardResponse]

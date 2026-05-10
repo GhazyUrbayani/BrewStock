@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: brewStockBackend
+Version: 0.1.0
+Summary: BrewStock demand forecast backend
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.111.0
+Requires-Dist: uvicorn[standard]>=0.30.0
+Requires-Dist: pydantic>=2.7.0
+Requires-Dist: email-validator>=2.2.0
+Requires-Dist: sqlalchemy>=2.0.30
+Requires-Dist: asyncpg>=0.29.0
+Requires-Dist: redis>=5.0.4
+Requires-Dist: python-jose[cryptography]>=3.3.0
+Requires-Dist: passlib>=1.7.4
+Requires-Dist: python-multipart>=0.0.9
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: pillow>=10.3.0
+Requires-Dist: pandas>=2.2.2
+Requires-Dist: prophet>=1.1.5
+Requires-Dist: xgboost>=2.0.3
+Requires-Dist: ultralytics>=8.3.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.2.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.6; extra == "dev"
+Requires-Dist: anyio>=4.4.0; extra == "dev"
+Requires-Dist: ruff>=0.4.8; extra == "dev"
+
+# BrewStock Backend
+
+FastAPI backend untuk auth, inventory transactions, dan demand forecast.
+
+## Core
+- Repository pattern
+- Strategy pattern (`prophet`, `xgboost`, dengan fallback baseline)
+- Observer pattern (log + AI insight trigger)
+- Factory pattern untuk AI provider
+- JWT access token + refresh rotation
+- Sliding window rate limit
+- Forecast cache (Redis, otomatis fallback in-memory jika Redis belum aktif)
+
+## API
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `GET /api/v1/inventory/summary`
+- `GET /api/v1/inventory/transactions`
+- `POST /api/v1/inventory/transactions`
+- `DELETE /api/v1/inventory/transactions/{transactionId}`
+- `POST /api/v1/forecast/demand`
+- `POST /api/v1/scanner/detect`
+
+## Run
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev]
+cp .env.example .env
+uvicorn src.app.main:app --reload --port 8000
+```
+
+## Test
+```bash
+cd backend
+source .venv/bin/activate
+pytest -q
+```

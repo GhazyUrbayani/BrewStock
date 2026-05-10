@@ -48,6 +48,9 @@ def loadSettings() -> AppSettings:
     if settingsCache is not None:
         return settingsCache
 
+    from dotenv import load_dotenv
+    load_dotenv()
+
     allowedOriginsValue = os.getenv("allowedOrigins", "http://localhost:5173")
     settingsCache = AppSettings(
         appName=os.getenv("appName", "BrewStock API"),

@@ -70,7 +70,7 @@ class ForecastService:
 
         repositoryHistory = await self.transactionRepository.fetchHistoryBySku(requestValue.skuId)
         if not repositoryHistory:
-            raise ValueError("History data missing")
+            raise ValueError("Belum ada data histori demand untuk SKU ini. Silakan catat transaksi terlebih dahulu.")
         return repositoryHistory
 
     # dibantu AI: buildResponseValue

@@ -1,6 +1,7 @@
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { ApiError, apiRequest } from './api'
 import AlertPanel from './components/AlertPanel'
+import KpiCard from './components/KpiCard'
 import AssistantPage from './pages/AssistantPage'
 import ForecastChartPage from './pages/ForecastChartPage'
 import ScannerPage from './pages/ScannerPage'
@@ -11,6 +12,8 @@ import type {
   ForecastModelType,
   ForecastResponse,
   InventorySummary,
+  DashboardKpiResponse,
+  KpiCardType,
   TokenResponse,
   TransactionRecord,
 } from './types'
@@ -115,6 +118,7 @@ function App() {
   const [healthState, setHealthState] = useState<'checking' | 'online' | 'offline'>('checking')
   const [notice, setNotice] = useState<NoticeState | null>(null)
   const [summaryItems, setSummaryItems] = useState<InventorySummary[]>([])
+  const [kpis, setKpis] = useState<KpiCardType[]>([])
   const [transactionItems, setTransactionItems] = useState<TransactionRecord[]>([])
   const [selectedSku, setSelectedSku] = useState('all')
   const [forecastResult, setForecastResult] = useState<ForecastResponse | null>(null)
@@ -198,12 +202,14 @@ function App() {
 
     setIsDataLoading(true)
     try {
-      const [nextSummaryItems, nextTransactionItems] = await Promise.all([
+      const [nextSummaryItems, nextTransactionItems, nextKpi] = await Promise.all([
         authRequest<InventorySummary[]>('/api/v1/inventory/summary'),
         authRequest<TransactionRecord[]>('/api/v1/inventory/transactions?limit=100'),
+        authRequest<DashboardKpiResponse>('/api/v1/inventory/kpi'),
       ])
       setSummaryItems(nextSummaryItems)
       setTransactionItems(nextTransactionItems)
+      setKpis(nextKpi.kpiCards)
       setNotice({ tone: 'success', message: 'Data backend berhasil dimuat' })
       setForecastForm((previousValue) => {
         if (
@@ -238,22 +244,7 @@ function App() {
     return transactionItems.filter((itemValue) => itemValue.skuId === selectedSku)
   }, [selectedSku, transactionItems])
 
-  const dashboardTotals = useMemo(() => {
-    const totalDemand = summaryItems.reduce(
-      (sumValue, itemValue) => sumValue + itemValue.totalDemand,
-      0,
-    )
-    const totalTransactions = summaryItems.reduce(
-      (sumValue, itemValue) => sumValue + itemValue.transactionCount,
-      0,
-    )
-    return {
-      skuCount: summaryItems.length,
-      totalDemand,
-      totalTransactions,
-      averagePerSku: summaryItems.length === 0 ? 0 : totalDemand / summaryItems.length,
-    }
-  }, [summaryItems])
+
 
   const forecastChartSeries = useMemo<ForecastChartSeries[]>(() => {
     if (!forecastResult || forecastResult.points.length === 0) {
@@ -480,10 +471,9 @@ function App() {
       </header>
 
       <section className="metric-grid" aria-label="Ringkasan inventory">
-        <MetricCard label="SKU aktif" value={formatNumber(dashboardTotals.skuCount)} />
-        <MetricCard label="Total demand" value={formatNumber(dashboardTotals.totalDemand)} />
-        <MetricCard label="Transaksi" value={formatNumber(dashboardTotals.totalTransactions)} />
-        <MetricCard label="Rata-rata per SKU" value={formatNumber(dashboardTotals.averagePerSku)} />
+        {kpis.map((kpiValue) => (
+          <KpiCard key={kpiValue.label} {...kpiValue} />
+        ))}
       </section>
 
       <StatusStrip healthState={healthState} notice={notice} onRetry={checkHealth} />
@@ -819,15 +809,6 @@ function StatusStrip({
         </button>
       ) : null}
     </div>
-  )
-}
-
-function MetricCard({ label, value }: { label: string; value: string }) {
-  return (
-    <article className="metric-card">
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </article>
   )
 }
 
