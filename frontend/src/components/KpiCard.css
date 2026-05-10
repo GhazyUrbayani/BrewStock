@@ -33,12 +33,17 @@
   text-transform: uppercase;
 }
 
-.kpi-card-status.positive {
+.kpi-card-status.good {
   background: #dcfce7;
   color: #047857;
 }
 
-.kpi-card-status.negative {
+.kpi-card-status.warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.kpi-card-status.critical {
   background: #ffe4e6;
   color: #be123c;
 }
@@ -69,11 +74,11 @@
   gap: 6px;
 }
 
-.kpi-card-delta.positive {
+.kpi-card-delta.up {
   color: #047857;
 }
 
-.kpi-card-delta.negative {
+.kpi-card-delta.down {
   color: #be123c;
 }
 
